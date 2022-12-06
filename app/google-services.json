@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "121834569736",
+    "project_id": "shabad-play",
+    "storage_bucket": "shabad-play.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121834569736:android:22f83d0c179d21db8091bd",
+        "android_client_info": {
+          "package_name": "savita.example.shabadplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121834569736-annfemmjl4a6dd06jm1p7qf6e3aoacbf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdP7JwTae-u5r95Xh3285HVL1MQ2MmJfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121834569736-annfemmjl4a6dd06jm1p7qf6e3aoacbf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
