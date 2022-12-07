@@ -43,6 +43,8 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main2Activity extends AppCompatActivity implements OnUserEarnedRewardListener{
     private static final int MY_REQUEST_CODE = 100 ;
@@ -73,17 +75,8 @@ public class Main2Activity extends AppCompatActivity implements OnUserEarnedRewa
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseGetData firebaseGetData = new FirebaseGetData();
-                firebaseGetData.fetchAllData("all data");
-                firebaseGetData.fetchAllData("result");
-                firebaseGetData.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
-                    @Override
-                    public void getRealList(SomeFunction.dataReturn list) {
-                        Log.d("firebase2","call pass   "+ String.valueOf(list));
-                    }
-                });
-             //   Intent myIntent = new Intent(Main2Activity.this, result.class);
-             //   startActivity(myIntent);
+                Intent myIntent = new Intent(Main2Activity.this, AllClass.class);
+                startActivity(myIntent);
 
             }
         });
