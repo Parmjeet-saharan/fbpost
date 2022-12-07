@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:id="@+id/relativelayout">
-    <ImageView
-        android:id="@+id/image"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:orientation="vertical">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
-    <TextView
-        android:id="@+id/text"
-        android:textStyle="bold|italic"
-        android:textSize="24sp"
-        android:padding="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-</RelativeLayout>
+        android:layout_height="200dp"
+        android:id="@+id/relativelayout">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:contentDescription="/my_image_description" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16sp"
+            android:padding="4dp"
+            android:text="YOU CAN UPLOAD BELOW DOCUMENT TEST IS HERE YOU TRY IT"
+            android:textSize="10dp" />
+    </RelativeLayout>
+</LinearLayout>

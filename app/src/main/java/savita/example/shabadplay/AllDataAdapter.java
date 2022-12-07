@@ -2,11 +2,18 @@ package savita.example.shabadplay;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,6 +49,7 @@ public class AllDataAdapter extends RecyclerView.Adapter<AllDataAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull AllDataAdapter.MyViewHolder holder, int position) {
         String key = (String) details.totalKey.get(position);
+        holder.relativeLayout.setBackgroundColor(Color.GREEN);
         String lastchar = String.valueOf(key.charAt(key.length()-1));
         String datatext  = "data"+lastchar;
         String imageurl = "image"+lastchar;
@@ -66,10 +78,13 @@ public class AllDataAdapter extends RecyclerView.Adapter<AllDataAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
         ImageView imageView;
+        RelativeLayout relativeLayout;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-             textView = (TextView) itemView.findViewById(R.id.text);
-             imageView = (ImageView) itemView.findViewById(R.id.image);
+            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativelayout);
+             textView = (TextView) itemView.findViewById(R.id.textView);
+             imageView = (ImageView) itemView.findViewById(R.id.imageView);
         }
     }
+
 }
