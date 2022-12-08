@@ -49,7 +49,7 @@ public class AllDataAdapter extends RecyclerView.Adapter<AllDataAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull AllDataAdapter.MyViewHolder holder, int position) {
         String key = (String) details.totalKey.get(position);
-        holder.relativeLayout.setBackgroundColor(Color.GREEN);
+       // holder.relativeLayout.setBackgroundColor(Color.GREEN);
         String lastchar = String.valueOf(key.charAt(key.length()-1));
         String datatext  = "data"+lastchar;
         String imageurl = "image"+lastchar;
