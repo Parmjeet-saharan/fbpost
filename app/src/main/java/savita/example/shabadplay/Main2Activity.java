@@ -11,10 +11,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdError;
@@ -46,12 +48,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Main2Activity extends AppCompatActivity implements OnUserEarnedRewardListener{
+public class Main2Activity extends AppCompatActivity {
     private static final int MY_REQUEST_CODE = 100 ;
     Button button;
-    AdView mAdView;
+    EditText editText;
+    AdView mAdView,mAdView2;
     AppUpdateManager appUpdateManager;
-    RewardedInterstitialAd rewardedInterstitialAd;
     InstallStateUpdatedListener installStateUpdatedListener;
      final String TAG = "MainActivity";
 
@@ -60,7 +62,10 @@ public class Main2Activity extends AppCompatActivity implements OnUserEarnedRewa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button = (Button) findViewById(R.id.upload);
-         appUpdateManager = AppUpdateManagerFactory.create(this);
+        mAdView = findViewById(R.id.adView);
+        mAdView2= findViewById(R.id.adView2);
+        editText = (EditText) findViewById(R.id.edit);
+        appUpdateManager = AppUpdateManagerFactory.create(this);
         installStateUpdatedListener = state -> {
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
                 popupSnackBarForCompleteUpdate();
@@ -75,8 +80,14 @@ public class Main2Activity extends AppCompatActivity implements OnUserEarnedRewa
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(Main2Activity.this, AllClass.class);
-                startActivity(myIntent);
+                if( TextUtils.isEmpty(editText.getText())){
+                    editText.setError( "First name is required!" );
+                }else {
+                    editText.setError(null);
+                    Intent myIntent = new Intent(Main2Activity.this, AllClass.class);
+                    myIntent.putExtra("name", editText.getText().toString());
+                    startActivity(myIntent);
+                }
 
             }
         });
@@ -85,11 +96,10 @@ public class Main2Activity extends AppCompatActivity implements OnUserEarnedRewa
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-
-        mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-     //   mAdView.loadAd(adRequest);
-        //    showAd();
+        mAdView.loadAd(adRequest);
+        mAdView2.loadAd(adRequest);
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -101,61 +111,7 @@ public class Main2Activity extends AppCompatActivity implements OnUserEarnedRewa
             }
         }
     }
-    public void showAd(){
-        RewardedInterstitialAd.load(this, "ca-app-pub-3940256099942544/5354046379",
-                new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(RewardedInterstitialAd ad) {
-                        rewardedInterstitialAd = ad;
-                        rewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdClicked() {
-                                // Called when a click is recorded for an ad.
-                                Log.d(TAG, "Ad was clicked.");
-                            }
 
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                // Called when ad is dismissed.
-                                // Set the ad reference to null so you don't show the ad a second time.
-                                Log.d(TAG, "Ad dismissed fullscreen content.");
-                                rewardedInterstitialAd = null;
-                            }
-
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                // Called when ad fails to show.
-                                Log.e(TAG, "Ad failed to show fullscreen content.");
-                                rewardedInterstitialAd = null;
-                            }
-
-                            @Override
-                            public void onAdImpression() {
-                                // Called when an impression is recorded for an ad.
-                                Log.d(TAG, "Ad recorded an impression.");
-                            }
-
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                // Called when ad is shown.
-                                Log.d(TAG, "Ad showed fullscreen content.");
-                            }
-                        });
-                        rewardedInterstitialAd.show( Main2Activity.this, Main2Activity.this);
-                    }
-                    @Override
-                    public void onAdFailedToLoad(LoadAdError loadAdError) {
-                        Log.d(TAG, loadAdError.toString());
-                        rewardedInterstitialAd = null;
-                    }
-                });
-
-    }
-
-    @Override
-    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-
-    }
     public void flexiableUpdate(){
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
