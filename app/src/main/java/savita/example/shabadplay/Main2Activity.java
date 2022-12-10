@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdError;
@@ -50,8 +52,11 @@ import java.util.HashMap;
 
 public class Main2Activity extends AppCompatActivity {
     private static final int MY_REQUEST_CODE = 100 ;
-    Button button;
-    EditText editText;
+    public static final int PICK_IMAGE = 1;
+    Button button,editname,editimage,uploadimage;
+    LinearLayout namelayout,namelayout2,imagelayout,imagelayout2;
+    EditText editText,imageedittext;
+    TextView nametext,imagetext;
     AdView mAdView,mAdView2;
     AppUpdateManager appUpdateManager;
     InstallStateUpdatedListener installStateUpdatedListener;
@@ -61,10 +66,20 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button = (Button) findViewById(R.id.upload);
+        button = (Button) findViewById(R.id.next);
+        editname = (Button) findViewById(R.id.edittext);
+        editimage = (Button) findViewById(R.id.editimage);
+        uploadimage = (Button) findViewById(R.id.upload);
+        editText = (EditText) findViewById(R.id.edit);
+        imageedittext = (EditText) findViewById(R.id.image);
+        namelayout = (LinearLayout) findViewById(R.id.nametext);
+        namelayout2 = (LinearLayout) findViewById(R.id.nametext2);
+        imagelayout = (LinearLayout) findViewById(R.id.imagetext);
+        imagelayout2 = (LinearLayout) findViewById(R.id.imagetext2);
+        nametext = (TextView) findViewById(R.id.textView);
+        imagetext = (TextView) findViewById(R.id.textView2);
         mAdView = findViewById(R.id.adView);
         mAdView2= findViewById(R.id.adView2);
-        editText = (EditText) findViewById(R.id.edit);
         appUpdateManager = AppUpdateManagerFactory.create(this);
         installStateUpdatedListener = state -> {
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
@@ -77,6 +92,15 @@ public class Main2Activity extends AppCompatActivity {
         };
         appUpdateManager.registerListener(installStateUpdatedListener);
         flexiableUpdate();
+        uploadimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +133,9 @@ public class Main2Activity extends AppCompatActivity {
                 // If the update is cancelled or fails,
                 // you can request to start the update again.
             }
+        }
+        if (requestCode == PICK_IMAGE) {
+            //TODO: action
         }
     }
 
