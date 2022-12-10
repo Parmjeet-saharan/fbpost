@@ -10,13 +10,17 @@ import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +49,7 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -57,6 +62,7 @@ public class Main2Activity extends AppCompatActivity {
     LinearLayout namelayout,namelayout2,imagelayout,imagelayout2;
     EditText editText,imageedittext;
     TextView nametext,imagetext;
+    ImageView imageView;
     AdView mAdView,mAdView2;
     AppUpdateManager appUpdateManager;
     InstallStateUpdatedListener installStateUpdatedListener;
@@ -66,6 +72,7 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imageView = (ImageView) findViewById(R.id.imageView);
         button = (Button) findViewById(R.id.next);
         editname = (Button) findViewById(R.id.edittext);
         editimage = (Button) findViewById(R.id.editimage);
@@ -107,9 +114,12 @@ public class Main2Activity extends AppCompatActivity {
                 if( TextUtils.isEmpty(editText.getText())){
                     editText.setError( "First name is required!" );
                 }else {
-                    editText.setError(null);
+                    Requirdfunction requirdfunction = new Requirdfunction();
+                    requirdfunction.addToProfomence(Main2Activity.this,String.valueOf(editText.getText()));
+                    requirdfunction.getFromProfomence(Main2Activity.this);
                     Intent myIntent = new Intent(Main2Activity.this, AllClass.class);
                     myIntent.putExtra("name", editText.getText().toString());
+                    editText.setError(null);
                     startActivity(myIntent);
                 }
 
@@ -128,15 +138,35 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode == PICK_IMAGE) {
+                Uri selectedImageUri = data.getData();
+                if (null != selectedImageUri) {
+                    // update the preview image in the layout
+                    imageedittext.setText(String.valueOf(selectedImageUri));
+               //     imageView.setImageURI(selectedImageUri);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                        Requirdfunction requirdfunction = new Requirdfunction();
+                        requirdfunction.saveImage(bitmap,Main2Activity.this);
+                        Bitmap b = requirdfunction.getImage(Main2Activity.this);
+                        imageView.setImageBitmap(b);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
         if (requestCode == MY_REQUEST_CODE) {
+
             if (resultCode != RESULT_OK) {
                 // If the update is cancelled or fails,
                 // you can request to start the update again.
             }
         }
-        if (requestCode == PICK_IMAGE) {
-            //TODO: action
-        }
+
     }
 
     public void flexiableUpdate(){
