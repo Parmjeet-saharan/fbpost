@@ -64,4 +64,16 @@ public class Requirdfunction {
         Bitmap b = BitmapFactory.decodeStream(new FileInputStream(mypath));
         return b;
     }
+    public Boolean isImageexist(Context context){
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("profile", Context.MODE_PRIVATE);
+        File mypath = new File(directory, "profile.png");
+        String imagePath = mypath.toString();
+        if(mypath.exists()){
+            return true;
+            //  Log.d("saveim", "saveImage: exist and path is "+imagePath);
+        }else {
+            return false;
+        }
+    }
 }

@@ -49,6 +49,7 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -58,10 +59,10 @@ import java.util.HashMap;
 public class Main2Activity extends AppCompatActivity {
     private static final int MY_REQUEST_CODE = 100 ;
     public static final int PICK_IMAGE = 1;
-    Button button,editname,editimage,uploadimage;
-    LinearLayout namelayout,namelayout2,imagelayout,imagelayout2;
-    EditText editText,imageedittext;
-    TextView nametext,imagetext;
+    Button button,editname,uploadimage;
+    LinearLayout namelayout,namelayout2;
+    EditText editText;
+    TextView nametext;
     ImageView imageView;
     AdView mAdView,mAdView2;
     AppUpdateManager appUpdateManager;
@@ -75,16 +76,11 @@ public class Main2Activity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView);
         button = (Button) findViewById(R.id.next);
         editname = (Button) findViewById(R.id.edittext);
-        editimage = (Button) findViewById(R.id.editimage);
         uploadimage = (Button) findViewById(R.id.upload);
         editText = (EditText) findViewById(R.id.edit);
-        imageedittext = (EditText) findViewById(R.id.image);
         namelayout = (LinearLayout) findViewById(R.id.nametext);
         namelayout2 = (LinearLayout) findViewById(R.id.nametext2);
-        imagelayout = (LinearLayout) findViewById(R.id.imagetext);
-        imagelayout2 = (LinearLayout) findViewById(R.id.imagetext2);
         nametext = (TextView) findViewById(R.id.textView);
-        imagetext = (TextView) findViewById(R.id.textView2);
         mAdView = findViewById(R.id.adView);
         mAdView2= findViewById(R.id.adView2);
         appUpdateManager = AppUpdateManagerFactory.create(this);
@@ -111,7 +107,7 @@ public class Main2Activity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if( TextUtils.isEmpty(editText.getText())){
+                if( TextUtils.isEmpty(editText.getText()) &&  namelayout.getVisibility()==View.VISIBLE){
                     editText.setError( "First name is required!" );
                 }else {
                     Requirdfunction requirdfunction = new Requirdfunction();
@@ -125,6 +121,29 @@ public class Main2Activity extends AppCompatActivity {
 
             }
         });
+        editname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                namelayout.setVisibility(View.VISIBLE);
+                namelayout2.setVisibility(View.GONE);
+            }
+        });
+        Requirdfunction requirdfunction = new Requirdfunction();
+        String name = requirdfunction.getFromProfomence(Main2Activity.this);
+        if(name!="you"){
+            namelayout2.setVisibility(View.VISIBLE);
+            namelayout.setVisibility(View.GONE);
+            nametext.setText("hi "+name);
+        }
+        if(requirdfunction.isImageexist(Main2Activity.this)){
+            Bitmap b = null;
+            try {
+                b = requirdfunction.getImage(Main2Activity.this);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            imageView.setImageBitmap(b);
+        }
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -144,7 +163,6 @@ public class Main2Activity extends AppCompatActivity {
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
                     // update the preview image in the layout
-                    imageedittext.setText(String.valueOf(selectedImageUri));
                //     imageView.setImageURI(selectedImageUri);
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
