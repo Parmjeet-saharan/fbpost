@@ -48,19 +48,17 @@ public class AllDataAdapter extends RecyclerView.Adapter<AllDataAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull AllDataAdapter.MyViewHolder holder, int position) {
-        String key = (String) details.totalKey.get(position);
+   //     Log.d("adapter", "getRealList: "+details.totalList);
        // holder.relativeLayout.setBackgroundColor(Color.GREEN);
-        String lastchar = String.valueOf(key.charAt(key.length()-1));
-        String datatext  = "data"+lastchar;
-        String imageurl = "image"+lastchar;
-        Log.d("adapterdata", "onBindViewHolder: "+String.valueOf(details.totalList));
-        Log.d("adapterdata", "onBindViewHolder: "+String.valueOf(details.totalKey));
-        Log.d("adapterdata", "onBindViewHolder: "+datatext+" :"+imageurl);
+        String datatext  = "data"+String.valueOf(position+1);
+        int offset = details.totalKey.size()/2;
+        String imageurl = "image"+String.valueOf(1+position);
+        Log.d("adapter", "test: "+datatext+" ,"+imageurl);
         String data = details.totalList.get(position).get(datatext);
          holder.textView.setText(data);
-        String link = details.totalList.get(position).get(imageurl);
+        String link = details.totalList.get(position+offset).get(imageurl);
         Log.d("adapterdata", "onBindViewHolder: "+data+" :"+link);
-        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/shabad-play.appspot.com/o/image%2Fall%20data%2FScreenshot%20(2).png?alt=media&token=25f081c4-8e38-414e-aa64-acea879dee4c").into(holder.imageView);
+        Picasso.get().load(link).into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
