@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import androidx.annotation.NonNull;
 
@@ -12,11 +13,16 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 
+import java.io.IOException;
+
 public class ShareImage {
-    public void sharefb(CallbackManager callbackManager, ShareDialog shareDialog){
+    public void sharefb(CallbackManager callbackManager, ShareDialog shareDialog,Context context, Bitmap image5) throws IOException {
         shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
             @Override
             public void onSuccess(Sharer.Result result) {
@@ -33,11 +39,21 @@ public class ShareImage {
 
             }
         });
-        if (ShareDialog.canShow(ShareLinkContent.class)) {
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+        if (ShareDialog.canShow(SharePhotoContent.class)) {
+            CreateImage createImage = new CreateImage();
+            Uri uri = createImage.getmageToShare(image5,context);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+            ShareHashtag shareHashTag = new ShareHashtag.Builder().setHashtag("https://www.youtube.com/watch?v=gcJ7MYr6dHc&list=RDMMEkIvdiVjKII&index\"").build();
+            SharePhoto photo = new SharePhoto.Builder()
+                    .setBitmap(bitmap)
+                    .setCaption("https://www.youtube.com/watch?v=gcJ7MYr6dHc&list=RDMMEkIvdiVjKII&index")
                     .build();
-            shareDialog.show(linkContent);
+            SharePhotoContent content = new SharePhotoContent.Builder()
+                    .addPhoto(photo)
+                    .setShareHashtag(shareHashTag)
+                    .setRef("hi")
+                    .build();
+            shareDialog.show(content);
         }
     }
     public void shrareAll(Context context, Bitmap image5){

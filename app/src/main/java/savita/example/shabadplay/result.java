@@ -50,6 +50,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -117,8 +118,12 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
             @Override
           public void onClick(View view) {
                 ShareImage shareImage = new ShareImage();
-                shareImage.sharefb(callbackManager,shareDialog);
-           }
+                try {
+                    shareImage.sharefb(callbackManager,shareDialog,result.this,image5);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
         showAd();
     }
@@ -133,7 +138,6 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-
         super.onWindowFocusChanged(hasFocus);
          image5 = createImage.loadBitmapFromView(relativeLayout);
     }
