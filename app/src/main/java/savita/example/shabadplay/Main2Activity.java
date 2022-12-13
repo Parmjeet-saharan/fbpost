@@ -63,7 +63,9 @@ public class Main2Activity extends AppCompatActivity {
     LinearLayout namelayout,namelayout2;
     EditText editText;
     TextView nametext;
+    UpdateApp updateApp = new UpdateApp();
     ImageView imageView;
+    View view2;
     AdView mAdView,mAdView2;
     AppUpdateManager appUpdateManager;
     InstallStateUpdatedListener installStateUpdatedListener;
@@ -86,15 +88,15 @@ public class Main2Activity extends AppCompatActivity {
         appUpdateManager = AppUpdateManagerFactory.create(this);
         installStateUpdatedListener = state -> {
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                popupSnackBarForCompleteUpdate();
+                updateApp.popupSnackBarForCompleteUpdate(appUpdateManager,view2,this);
             } else if (state.installStatus() == InstallStatus.INSTALLED) {
-                removeInstallStateUpdateListener();
+                updateApp.removeInstallStateUpdateListener(appUpdateManager,installStateUpdatedListener);
             } else {
                 Toast.makeText(getApplicationContext(), "InstallStateUpdatedListener: state: " + state.installStatus(), Toast.LENGTH_LONG).show();
             }
         };
         appUpdateManager.registerListener(installStateUpdatedListener);
-        flexiableUpdate();
+        updateApp.flexiableUpdate(appUpdateManager,view2,this);
         uploadimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,62 +186,5 @@ public class Main2Activity extends AppCompatActivity {
                 // you can request to start the update again.
             }
         }
-
     }
-
-    public void flexiableUpdate(){
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            Log.d(TAG, "flexiableUpdate@@@@@@@@@@@@@@@: "+String.valueOf(appUpdateInfo.updateAvailability()));
-            Log.d(TAG, "flexiableUpdate@@@@@@@@@@@@@@@: "+String.valueOf(appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)));
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
-                try {
-                    appUpdateManager.startUpdateFlowForResult(
-                            appUpdateInfo,
-                            AppUpdateType.FLEXIBLE,
-                            this,
-                            MY_REQUEST_CODE);
-                } catch (IntentSender.SendIntentException e) {
-                    e.printStackTrace();
-                }
-            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                popupSnackBarForCompleteUpdate();
-            }
-        });
-    }
-    public void imedareUpdate(){
-        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                try {
-                    appUpdateManager.startUpdateFlowForResult(
-                            appUpdateInfo,
-                            AppUpdateType.IMMEDIATE,
-                            this,
-                            MY_REQUEST_CODE);
-                } catch (IntentSender.SendIntentException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-    private void popupSnackBarForCompleteUpdate() {
-        Snackbar.make(findViewById(android.R.id.content).getRootView(), "New app is ready!", Snackbar.LENGTH_INDEFINITE)
-                .setAction("Install", view -> {
-                    if (appUpdateManager != null) {
-                        appUpdateManager.completeUpdate();
-                    }
-                })
-                .setActionTextColor(getResources().getColor(R.color.purple_500))
-                .show();
-    }
-    private void removeInstallStateUpdateListener() {
-        if (appUpdateManager != null) {
-            appUpdateManager.unregisterListener(installStateUpdatedListener);
-        }
-    }
-
 }

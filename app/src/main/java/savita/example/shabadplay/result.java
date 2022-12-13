@@ -2,8 +2,10 @@ package savita.example.shabadplay;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -43,23 +46,26 @@ import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class result extends AppCompatActivity implements OnUserEarnedRewardListener {
   Button button ,share;
   ImageView imageView;
+  CreateImage createImage = new CreateImage();
   EditText editText;
   Bitmap image5;
+  CallbackManager callbackManager;
+  ShareDialog shareDialog;
   RewardedInterstitialAd rewardedInterstitialAd;
   RelativeLayout relativeLayout;
     final String TAG = "result";
-
-    CallbackManager callbackManager;
-    ShareDialog shareDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,70 +76,48 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
        button = (Button) findViewById(R.id.upload);
        share = (Button) findViewById(R.id.fb_share_button);
        editText = (EditText) findViewById(R.id.edit);
-        callbackManager = CallbackManager.Factory.create();
-        shareDialog = new ShareDialog(this);
         editText.setText("hi all");
         editText.buildDrawingCache();
         relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
         relativeLayout.setDrawingCacheEnabled(true);
-        Bitmap bitmap = relativeLayout.getDrawingCache();
-        Bitmap bmp = textAsBitmap("hi all", 2, 3700);
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+        FirebaseGetData firebaseGetData = new FirebaseGetData();
+        firebaseGetData.fetchAllData("result/image1");
+        firebaseGetData.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void getRealList(SomeFunction.dataReturn list) {
+                list.totalList.sort(new Comparator<HashMap<String,String>>(){
+                    public int compare(HashMap<String,String> mapping1,HashMap<String,String> mapping2){
+                        return mapping1.keySet().iterator().next().compareTo( mapping2.keySet().iterator().next());
+                    }});
+                Picasso.get().load(list.totalList.get(0).get("image")).into(imageView);
+                BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                Bitmap image2 = drawable.getBitmap();
+            }
 
+        });
+        Bitmap bitmap = relativeLayout.getDrawingCache();
+        Bitmap bmp = createImage.textAsBitmap("hi all", 2, 3700);
         //    Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-       Bitmap image2 = drawable.getBitmap();
-       Bitmap image4 = StringToBitMap("hi hanuman");
-        Bitmap image = combineImages(image2,bmp);
+       Bitmap image4 = createImage.StringToBitMap("hi hanuman");
+   //     Bitmap image = combineImages(image2,bmp);
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
            public void onClick(View view) {
+                ShareImage shareImage = new ShareImage();
+                shareImage.shrareAll(result.this,image5);
 
-              Uri uri = getmageToShare(image5);
-               Intent intent = new Intent(Intent.ACTION_SEND);
-
-                // putting uri of image to be shared
-                intent.putExtra(Intent.EXTRA_STREAM, uri);
-
-                // adding text to share
-                intent.putExtra(Intent.EXTRA_TEXT, "https://firebase.google.com/docs/dynamic-links/use-cases/user-to-user#java");
-
-                // Add subject Here
-                intent.putExtra(Intent.EXTRA_SUBJECT, "https://firebase.google.com/docs/dynamic-links/use-cases/user-to-user#java");
-
-                // setting type to image
-                intent.setType("image/*\" + \"text/*");
-
-                // calling startactivity() to share
-                startActivity(Intent.createChooser(intent, "Share Via"));
             }
         });
        share.setOnClickListener(new View.OnClickListener() {
             @Override
           public void onClick(View view) {
-                shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-                    @Override
-                    public void onSuccess(Sharer.Result result) {
-
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull FacebookException e) {
-
-                    }
-                });
-                if (ShareDialog.canShow(ShareLinkContent.class)) {
-                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                            .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                            .build();
-                    shareDialog.show(linkContent);
-                }
+                ShareImage shareImage = new ShareImage();
+                shareImage.sharefb(callbackManager,shareDialog);
            }
         });
         showAd();
@@ -142,82 +126,21 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        ShareImage shareImage = new ShareImage();
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
     }
-    private Uri getmageToShare(Bitmap bitmap) {
-        File imagefolder = new File(getCacheDir(), "images");
-        Uri uri = null;
-        try {
-            imagefolder.mkdirs();
-            File file = new File(imagefolder, "shared_image.png");
-            FileOutputStream outputStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
-            outputStream.flush();
-            outputStream.close();
-            uri = FileProvider.getUriForFile(this, "com.anni.shareimage.fileprovider", file);
-        } catch (Exception e) {
-            Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        return uri;
-    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
 
         super.onWindowFocusChanged(hasFocus);
-         image5 = loadBitmapFromView(relativeLayout);
+         image5 = createImage.loadBitmapFromView(relativeLayout);
     }
     public void shareFB (View view) {
         ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentUrl(Uri.parse("https://developers.facebook.com"))
                 .build();
-    }
-    public Bitmap combineImages(Bitmap background, Bitmap foreground) {
-
-        int width = 0, height = 0;
-        Bitmap cs;
-
-        width = getWindowManager().getDefaultDisplay().getWidth();
-        height = getWindowManager().getDefaultDisplay().getHeight();
-
-        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas comboImage = new Canvas(cs);
-        background = Bitmap.createScaledBitmap(background, width, height, true);
-        comboImage.drawBitmap(background, 0, 0, null);
-        comboImage.drawBitmap(foreground, 0,0, null);
-
-        return cs;
-    }
-    public Bitmap textAsBitmap(String text, float textSize, int textColor) {
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setTextSize(textSize);
-        paint.setColor(Color.WHITE);
-        paint.setTextAlign(Paint.Align.LEFT);
-        float baseline = -paint.ascent(); // ascent() is negative
-        int width = (int) (paint.measureText(text) + 0.5f); // round
-        int height = (int) (baseline + paint.descent() + 0.5f);
-        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        canvas.drawText(text, 0, baseline, paint);
-        return image;
-    }
-    public Bitmap StringToBitMap(String image){
-        try{
-            byte [] encodeByte= Base64.decode(image,Base64.DEFAULT);
-            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        }catch(Exception e){
-            e.getMessage();
-            return null;
-        }
-    }
-    public Bitmap loadBitmapFromView(View v) {
-        Log.d(TAG, "loadBitmapFromView: "+String.valueOf(v.getWidth())+"  ,"+String.valueOf(v.getHeight()));
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-        v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
-        v.draw(c);
-        return b;
     }
     public void showAd(){
         RewardedInterstitialAd.load(this, "ca-app-pub-3940256099942544/5354046379",
@@ -269,7 +192,6 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                 });
 
     }
-
     @Override
     public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
 
