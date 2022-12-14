@@ -55,6 +55,7 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoa
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -67,9 +68,10 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
   Button button ,share,tryagain;
   TextView textView;
     RecyclerView recyclerView;
-  ImageView imageView;
+  ImageView imageView,imageView2;
   CreateImage createImage = new CreateImage();
   Bitmap image5;
+    int position=1;
     AdView mAdView;
   CallbackManager callbackManager;
   ShareDialog shareDialog;
@@ -84,6 +86,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
 
         setContentView(R.layout.activity_result);
         imageView = (ImageView) findViewById(R.id.imageView);
+        imageView2 = (ImageView) findViewById(R.id.imageView2);
         textView = (TextView) findViewById(R.id.textView) ;
        button = (Button) findViewById(R.id.upload);
         tryagain = (Button) findViewById(R.id.tryagain);
@@ -94,6 +97,19 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        Bundle extras = getIntent().getExtras();
+        Requirdfunction requirdfunction = new Requirdfunction();
+        try {
+            Bitmap profile = requirdfunction.getImage(result.this);
+            imageView2.setImageBitmap(profile);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (extras != null) {
+            position = extras.getInt("number");
+            // and get whatever type user account id is
+        }
         FirebaseGetData firebaseGetData = new FirebaseGetData();
         firebaseGetData.fetchAllData("all data");
         firebaseGetData.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
@@ -113,7 +129,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
 
         });
         FirebaseGetData firebaseGetData2 = new FirebaseGetData();
-        firebaseGetData2.fetchAllData("result/image1");
+        firebaseGetData2.fetchAllData("result/image"+String.valueOf(position));
         firebaseGetData2.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -166,7 +182,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
            @Override
            public void onClick(View view) {
                FirebaseGetData firebaseGetData = new FirebaseGetData();
-               firebaseGetData.fetchAllData("result/image1");
+               firebaseGetData.fetchAllData("result/image"+String.valueOf(position));
                firebaseGetData.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
                    @RequiresApi(api = Build.VERSION_CODES.N)
                    @Override
@@ -198,7 +214,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         });
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        showAd();
+     //   showAd();
     }
 
     @Override
@@ -272,5 +288,10 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
     @Override
     public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
 
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(result.this,AllClass.class);
+        startActivity(intent);
     }
 }

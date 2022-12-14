@@ -1,5 +1,6 @@
 package savita.example.shabadplay;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -47,7 +48,7 @@ public class AllDataAdapter extends RecyclerView.Adapter<AllDataAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AllDataAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AllDataAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
    //     Log.d("adapter", "getRealList: "+details.totalList);
        // holder.relativeLayout.setBackgroundColor(Color.GREEN);
         String datatext  = "data"+String.valueOf(position+1);
@@ -63,6 +64,7 @@ public class AllDataAdapter extends RecyclerView.Adapter<AllDataAdapter.MyViewHo
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(context, result.class);
+                myIntent.putExtra("number",position+1);
                 context.startActivity(myIntent);
             }
         });
