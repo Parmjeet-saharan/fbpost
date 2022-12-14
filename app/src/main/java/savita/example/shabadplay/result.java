@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -40,9 +42,13 @@ import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
@@ -55,18 +61,22 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class result extends AppCompatActivity implements OnUserEarnedRewardListener {
-  Button button ,share;
+  Button button ,share,tryagain;
+  TextView textView;
+    RecyclerView recyclerView;
   ImageView imageView;
   CreateImage createImage = new CreateImage();
-  EditText editText;
   Bitmap image5;
+    AdView mAdView;
   CallbackManager callbackManager;
   ShareDialog shareDialog;
   RewardedInterstitialAd rewardedInterstitialAd;
   RelativeLayout relativeLayout;
     final String TAG = "result";
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,17 +84,18 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
 
         setContentView(R.layout.activity_result);
         imageView = (ImageView) findViewById(R.id.imageView);
+        textView = (TextView) findViewById(R.id.textView) ;
        button = (Button) findViewById(R.id.upload);
+        tryagain = (Button) findViewById(R.id.tryagain);
+        mAdView = findViewById(R.id.adView);
        share = (Button) findViewById(R.id.fb_share_button);
-       editText = (EditText) findViewById(R.id.edit);
-        editText.setText("hi all");
-        editText.buildDrawingCache();
         relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
         relativeLayout.setDrawingCacheEnabled(true);
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         FirebaseGetData firebaseGetData = new FirebaseGetData();
-        firebaseGetData.fetchAllData("result/image1");
+        firebaseGetData.fetchAllData("all data");
         firebaseGetData.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -93,7 +104,33 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                     public int compare(HashMap<String,String> mapping1,HashMap<String,String> mapping2){
                         return mapping1.keySet().iterator().next().compareTo( mapping2.keySet().iterator().next());
                     }});
+                //  Log.d("allclass", "getRealList: "+list.totalList);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(linearLayoutManager);
+                AllDataAdapter allDataAdapter = new AllDataAdapter(result.this, list);
+                recyclerView.setAdapter(allDataAdapter); // set the Adapter to RecyclerView
+            }
+
+        });
+        FirebaseGetData firebaseGetData2 = new FirebaseGetData();
+        firebaseGetData2.fetchAllData("result/image1");
+        firebaseGetData2.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void getRealList(SomeFunction.dataReturn list) {
+                list.totalList.sort(new Comparator<HashMap<String,String>>(){
+                    public int compare(HashMap<String,String> mapping1,HashMap<String,String> mapping2){
+                        return mapping1.keySet().iterator().next().compareTo( mapping2.keySet().iterator().next());
+                    }});
                 Picasso.get().load(list.totalList.get(0).get("image")).into(imageView);
+                int l = list.totalKey.size();
+                Random random = new Random();
+                int ra = random.nextInt(l);
+                if(ra==0){
+                    ra=1;
+                }
+                String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
+                textView.setText(val);
                 BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
                 Bitmap image2 = drawable.getBitmap();
             }
@@ -125,6 +162,42 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                 }
             }
         });
+       tryagain.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               FirebaseGetData firebaseGetData = new FirebaseGetData();
+               firebaseGetData.fetchAllData("result/image1");
+               firebaseGetData.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
+                   @RequiresApi(api = Build.VERSION_CODES.N)
+                   @Override
+                   public void getRealList(SomeFunction.dataReturn list) {
+                       list.totalList.sort(new Comparator<HashMap<String,String>>(){
+                           public int compare(HashMap<String,String> mapping1,HashMap<String,String> mapping2){
+                               return mapping1.keySet().iterator().next().compareTo( mapping2.keySet().iterator().next());
+                           }});
+                       int l = list.totalKey.size();
+                       Random random = new Random();
+                       int ra = random.nextInt(l);
+                       if(ra==0){
+                           ra=1;
+                       }
+                       String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
+                       textView.setText(val);
+                       image5 = createImage.loadBitmapFromView(relativeLayout);
+
+
+                   }
+
+               });
+           }
+       });
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         showAd();
     }
 
