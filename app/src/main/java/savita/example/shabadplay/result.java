@@ -147,15 +147,15 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                 }
                 String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
                 textView.setText(val);
-                BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-                Bitmap image2 = drawable.getBitmap();
+         //       BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+           //     Bitmap image2 = drawable.getBitmap();
             }
 
         });
-        Bitmap bitmap = relativeLayout.getDrawingCache();
-        Bitmap bmp = createImage.textAsBitmap("hi all", 2, 3700);
+    //    Bitmap bitmap = relativeLayout.getDrawingCache();
+    //    Bitmap bmp = createImage.textAsBitmap("hi all", 2, 3700);
         //    Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
-       Bitmap image4 = createImage.StringToBitMap("hi hanuman");
+    //   Bitmap image4 = createImage.StringToBitMap("hi hanuman");
    //     Bitmap image = combineImages(image2,bmp);
 
 
