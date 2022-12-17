@@ -113,8 +113,10 @@ public class Main2Activity extends AppCompatActivity {
                     editText.setError( "First name is required!" );
                 }else {
                     Requirdfunction requirdfunction = new Requirdfunction();
-                    requirdfunction.addToProfomence(Main2Activity.this,String.valueOf(editText.getText()));
-                    requirdfunction.getFromProfomence(Main2Activity.this);
+                    if(!((String.valueOf(editText.toString())).isEmpty()) && namelayout.getVisibility()==View.VISIBLE) {
+                        requirdfunction.addToProfomence(Main2Activity.this, String.valueOf(editText.getText()));
+                        requirdfunction.getFromProfomence(Main2Activity.this);
+                    }
                     Intent myIntent = new Intent(Main2Activity.this, AllClass.class);
                     myIntent.putExtra("name", editText.getText().toString());
                     editText.setError(null);
@@ -132,6 +134,7 @@ public class Main2Activity extends AppCompatActivity {
         });
         Requirdfunction requirdfunction = new Requirdfunction();
         String name = requirdfunction.getFromProfomence(Main2Activity.this);
+        Log.d("name", "onCreate: name is "+name);
         if(name!="you"){
             namelayout2.setVisibility(View.VISIBLE);
             namelayout.setVisibility(View.GONE);
