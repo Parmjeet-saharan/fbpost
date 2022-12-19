@@ -4,7 +4,9 @@ package savita.example.shabadplay;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
@@ -44,6 +46,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.common.IntentSenderForResultStarter;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
@@ -60,7 +63,7 @@ public class Main2Activity extends AppCompatActivity {
     private static final int MY_REQUEST_CODE = 100 ;
     public static final int PICK_IMAGE = 1;
     Button button,editname,uploadimage;
-    LinearLayout namelayout,namelayout2;
+    LinearLayout namelayout,namelayout2,snackbarlay;
     EditText editText;
     TextView nametext;
     UpdateApp updateApp = new UpdateApp();
@@ -71,32 +74,33 @@ public class Main2Activity extends AppCompatActivity {
     InstallStateUpdatedListener installStateUpdatedListener;
      final String TAG = "MainActivity";
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        view2 = findViewById(android.R.id.content).getRootView();
         imageView = (ImageView) findViewById(R.id.imageView);
         button = (Button) findViewById(R.id.next);
         editname = (Button) findViewById(R.id.edittext);
         uploadimage = (Button) findViewById(R.id.upload);
         editText = (EditText) findViewById(R.id.edit);
+        snackbarlay = (LinearLayout) findViewById(R.id.snackbar_action);
         namelayout = (LinearLayout) findViewById(R.id.nametext);
         namelayout2 = (LinearLayout) findViewById(R.id.nametext2);
         nametext = (TextView) findViewById(R.id.textView);
         mAdView = findViewById(R.id.adView);
         mAdView2= findViewById(R.id.adView2);
-        appUpdateManager = AppUpdateManagerFactory.create(this);
+        appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
         installStateUpdatedListener = state -> {
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                updateApp.popupSnackBarForCompleteUpdate(appUpdateManager,view2,this);
+                updateApp.popupSnackBarForCompleteUpdate(appUpdateManager,view2,Main2Activity.this,snackbarlay);
             } else if (state.installStatus() == InstallStatus.INSTALLED) {
                 updateApp.removeInstallStateUpdateListener(appUpdateManager,installStateUpdatedListener);
             } else {
                 Toast.makeText(getApplicationContext(), "InstallStateUpdatedListener: state: " + state.installStatus(), Toast.LENGTH_LONG).show();
             }
         };
-        appUpdateManager.registerListener(installStateUpdatedListener);
-        updateApp.flexiableUpdate(appUpdateManager,view2,this);
         uploadimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,7 +161,8 @@ public class Main2Activity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         mAdView2.loadAd(adRequest);
-
+        appUpdateManager.registerListener(installStateUpdatedListener);
+        updateApp.flexiableUpdate(appUpdateManager,view2,Main2Activity.this,snackbarlay);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

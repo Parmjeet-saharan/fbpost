@@ -12,8 +12,8 @@ android {
         applicationId "savita.example.shabadplay"
         minSdk 21
         targetSdk 32
-        versionCode 6
-        versionName "6.0"
+        versionCode 24
+        versionName "24.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.android.play:app-update:2.0.1'
     implementation 'com.google.android.play:app-update-ktx:2.0.1'
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.android.material:material:1.2.1'
 
