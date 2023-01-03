@@ -66,7 +66,7 @@ import java.util.Random;
 
 public class result extends AppCompatActivity implements OnUserEarnedRewardListener {
   Button button ,share,tryagain;
-  TextView textView;
+  TextView textView,nametext;
     RecyclerView recyclerView;
   ImageView imageView,imageView2;
   CreateImage createImage = new CreateImage();
@@ -87,7 +87,8 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         setContentView(R.layout.activity_result);
         imageView = (ImageView) findViewById(R.id.imageView);
         imageView2 = (ImageView) findViewById(R.id.imageView2);
-        textView = (TextView) findViewById(R.id.textView) ;
+        nametext = (TextView) findViewById(R.id.textView) ;
+        textView = (TextView) findViewById(R.id.textView2) ;
        button = (Button) findViewById(R.id.upload);
         tryagain = (Button) findViewById(R.id.tryagain);
         mAdView = findViewById(R.id.adView);
@@ -97,6 +98,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        nametext.setText("parmjeet saharan");
         Bundle extras = getIntent().getExtras();
         Requirdfunction requirdfunction = new Requirdfunction();
         try {

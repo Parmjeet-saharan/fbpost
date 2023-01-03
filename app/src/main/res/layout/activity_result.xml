@@ -27,10 +27,9 @@
             android:scaleType="fitXY"
             android:layout_height="250dp"
             android:contentDescription="/my_image_description" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -38,7 +37,6 @@
             android:layout_height="90dp"
             android:scaleType="fitXY"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/image" />
 
@@ -48,20 +46,23 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/imageView2"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"
             android:layout_alignParentTop="true"
             android:text="YOU CAN UPLOAD BELOW DOCUMENT TEST IS HERE YOU TRY IT"
             android:textSize="20dp" />
-        </LinearLayout>
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/textView"
+            android:layout_toRightOf="@+id/imageView2"
             android:textColor="@color/white"
             android:text="YOU CAN UPLOAD BELOW DOCUMENT TEST IS HERE YOU TRY IT"
-            android:textSize="10dp" />
+            android:textSize="18dp" />
+        </RelativeLayout>
     </RelativeLayout>
     <Button
         android:id="@+id/tryagain"
