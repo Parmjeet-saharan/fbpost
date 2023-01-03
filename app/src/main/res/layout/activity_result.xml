@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
+            android:textColor="@color/white"
             android:layout_marginTop="10dp"
             android:layout_alignParentTop="true"
             android:text="YOU CAN UPLOAD BELOW DOCUMENT TEST IS HERE YOU TRY IT"
@@ -56,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
             android:text="YOU CAN UPLOAD BELOW DOCUMENT TEST IS HERE YOU TRY IT"
             android:textSize="10dp" />
     </RelativeLayout>
