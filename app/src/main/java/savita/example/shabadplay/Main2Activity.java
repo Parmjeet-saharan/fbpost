@@ -117,14 +117,20 @@ public class Main2Activity extends AppCompatActivity {
                     editText.setError( "First name is required!" );
                 }else {
                     Requirdfunction requirdfunction = new Requirdfunction();
-                    if(!((String.valueOf(editText.toString())).isEmpty()) && namelayout.getVisibility()==View.VISIBLE) {
-                        requirdfunction.addToProfomence(Main2Activity.this, String.valueOf(editText.getText()));
-                        requirdfunction.getFromProfomence(Main2Activity.this);
+                    if((requirdfunction.isImageexist(Main2Activity.this))) {
+                        if (!((String.valueOf(editText.toString())).isEmpty()) && namelayout.getVisibility() == View.VISIBLE) {
+                            requirdfunction.addToProfomence(Main2Activity.this, String.valueOf(editText.getText()));
+                            requirdfunction.getFromProfomence(Main2Activity.this);
+                        }
+                        Intent myIntent = new Intent(Main2Activity.this, AllClass.class);
+                        myIntent.putExtra("name", editText.getText().toString());
+                        editText.setError(null);
+                        startActivity(myIntent);
+                    }else {
+                        Toast.makeText(Main2Activity.this, "please upload photo first",
+                                Toast.LENGTH_LONG).show();
                     }
-                    Intent myIntent = new Intent(Main2Activity.this, AllClass.class);
-                    myIntent.putExtra("name", editText.getText().toString());
-                    editText.setError(null);
-                    startActivity(myIntent);
+
                 }
 
             }
