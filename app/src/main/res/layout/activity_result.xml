@@ -20,16 +20,15 @@
         android:layout_height="200dp"
         android:layout_marginTop="5dp"
         android:id="@+id/relativelayout">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:layout_height="250dp"
-            android:contentDescription="/my_image_description" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:scaleType="fitXY"
+                android:layout_height="250dp"
+                android:contentDescription="/my_image_description" />
 
         <ImageView
             android:id="@+id/imageView2"

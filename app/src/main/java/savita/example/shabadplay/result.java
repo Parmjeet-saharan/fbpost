@@ -16,6 +16,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class result extends AppCompatActivity implements OnUserEarnedRewardListener {
   Button button ,share,tryagain;
@@ -149,6 +151,22 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                 }
                 String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
                 textView.setText(val);
+                Thread t1 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // code goes here.
+                        try {
+                            TimeUnit.SECONDS.sleep(2);
+                            image5 = createImage.loadBitmapFromView(relativeLayout);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+                t1.start();
+
+                //     image5 = createImage.loadBitmapFromView(relativeLayout);
          //       BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
            //     Bitmap image2 = drawable.getBitmap();
             }
@@ -160,7 +178,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
     //   Bitmap image4 = createImage.StringToBitMap("hi hanuman");
    //     Bitmap image = combineImages(image2,bmp);
 
-
+      //  showAd();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
            public void onClick(View view) {
@@ -172,6 +190,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
        share.setOnClickListener(new View.OnClickListener() {
             @Override
           public void onClick(View view) {
+             //   showAd();
                 ShareImage shareImage = new ShareImage();
                 try {
                     shareImage.sharefb(callbackManager,shareDialog,result.this,image5);
@@ -202,8 +221,6 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                        String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
                        textView.setText(val);
                        image5 = createImage.loadBitmapFromView(relativeLayout);
-
-
                    }
 
                });
@@ -230,7 +247,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-         image5 = createImage.loadBitmapFromView(relativeLayout);
+     //    image5 = createImage.loadBitmapFromView(relativeLayout);
     }
     public void shareFB (View view) {
         ShareLinkContent content = new ShareLinkContent.Builder()
@@ -295,5 +312,17 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
     public void onBackPressed() {
         Intent intent = new Intent(result.this,AllClass.class);
         startActivity(intent);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        relativeLayout.post(new Runnable() {
+            @Override
+            public void run() {
+
+              //  image5 = createImage.loadBitmapFromView(relativeLayout);
+            }
+        });
+
     }
 }
