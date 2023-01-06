@@ -63,11 +63,11 @@
             android:orientation="horizontal">
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:inputType="text"
-        android:textColor="@color/white"
-        android:background="@color/black"
-        android:textColorHint="@color/white"
+        android:textColor="@color/black"
+        android:background="@color/white"
+        android:textColorHint="@color/black"
         android:id="@+id/edit"
         android:hint="ENTER YOUR NAME" />
         </LinearLayout>
@@ -82,8 +82,9 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_weight="8"
+            android:gravity="center"
             android:textColor="@color/white"
             android:text="YOU CAN UPLOAD BELOW "
             android:textSize="25dp" />
