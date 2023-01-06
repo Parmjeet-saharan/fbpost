@@ -47,21 +47,21 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="17dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/cardView"
             android:layout_centerHorizontal="true"
             android:textColor="@color/white"
-            android:layout_marginTop="10dp"
             android:layout_alignParentTop="true"
             android:text="YOU CAN UPLOAD BELOW DOCUMENT TEST IS HERE YOU TRY IT"
-            android:textSize="20dp" />
+            android:textSize="15dp" />
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/textView"
+            android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/cardView"
             android:textColor="@color/white"
             android:text="YOU CAN UPLOAD BELOW DOCUMENT TEST IS HERE YOU TRY IT"
@@ -90,7 +90,7 @@
         android:layout_marginRight="2dp"
         android:layout_marginTop="2dp"
         android:layout_weight="1"
-        android:text="NEXT" />
+        android:text="SHARE" />
 
     <Button
         android:id="@+id/fb_share_button"
@@ -100,7 +100,7 @@
         android:layout_weight="1"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
-        android:text="facebook"
+        android:text="fb share"
         android:textAllCaps="true" />
     </LinearLayout>
 

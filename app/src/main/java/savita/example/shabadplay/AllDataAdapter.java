@@ -64,6 +64,7 @@ public class AllDataAdapter extends RecyclerView.Adapter<AllDataAdapter.MyViewHo
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(context, result.class);
+                myIntent.putExtra("data",data);
                 myIntent.putExtra("number",position+1);
                 context.startActivity(myIntent);
             }

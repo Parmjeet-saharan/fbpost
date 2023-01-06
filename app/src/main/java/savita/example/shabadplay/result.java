@@ -74,6 +74,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
   CreateImage createImage = new CreateImage();
   Bitmap image5;
     int position=1;
+    String data;
     AdView mAdView;
   CallbackManager callbackManager;
   ShareDialog shareDialog;
@@ -100,7 +101,6 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        nametext.setText("parmjeet saharan");
         Bundle extras = getIntent().getExtras();
         Requirdfunction requirdfunction = new Requirdfunction();
         try {
@@ -112,6 +112,8 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         }
         if (extras != null) {
             position = extras.getInt("number");
+            data = extras.getString("data");
+            nametext.setText(data);
             // and get whatever type user account id is
         }
         FirebaseGetData firebaseGetData = new FirebaseGetData();
@@ -150,6 +152,9 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                     ra=1;
                 }
                 String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
+                Requirdfunction requirdfunction = new Requirdfunction();
+                String name = requirdfunction.getFromProfomence(result.this);
+                val=name+" "+val;
                 textView.setText(val);
                 Thread t1 = new Thread(new Runnable() {
                     @Override
