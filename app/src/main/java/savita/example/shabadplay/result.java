@@ -247,7 +247,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
            int rand = random.nextInt(ranNum);
             Toast.makeText(result.this, " random num is  "+String.valueOf(rand),
                     Toast.LENGTH_LONG).show();
-           if(rand == 1){
+           if(rand == 0){
                showAd();
            }
         }
