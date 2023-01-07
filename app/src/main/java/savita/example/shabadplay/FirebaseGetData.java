@@ -1,7 +1,10 @@
 package savita.example.shabadplay;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -10,6 +13,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,5 +58,29 @@ public class FirebaseGetData {
                 }
             }
         });
+    }
+    public int getRemote(String remote, Context context){
+        FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+        int iaadd = (int) mFirebaseRemoteConfig.getLong(remote);
+        mFirebaseRemoteConfig.fetchAndActivate()
+                .addOnCompleteListener((Activity) context, new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+                        if (task.isSuccessful()) {
+                            boolean updated = task.getResult();
+                            Log.d("Firebase function", "Config params updated: " + updated);
+
+
+                        } else {
+
+                        }
+
+                    }
+                });
+        return  iaadd ;
     }
 }

@@ -69,6 +69,8 @@ import java.util.concurrent.TimeUnit;
 public class result extends AppCompatActivity implements OnUserEarnedRewardListener {
   Button button ,share,tryagain;
   TextView textView,nametext;
+  int isadd = 1;
+  int ranNum = 5;
     RecyclerView recyclerView;
   ImageView imageView,imageView2;
   CreateImage createImage = new CreateImage();
@@ -238,7 +240,18 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         });
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-     //   showAd();
+        isadd = firebaseGetData.getRemote("isadd",result.this);
+        ranNum = firebaseGetData.getRemote("ranNum",result.this);
+        if(isadd ==1){
+           Random random = new Random();
+           int rand = random.nextInt(ranNum);
+            Toast.makeText(result.this, " random num is  "+String.valueOf(rand),
+                    Toast.LENGTH_LONG).show();
+           if(rand == 1){
+               showAd();
+           }
+        }
+
     }
 
     @Override
