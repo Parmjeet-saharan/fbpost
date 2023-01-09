@@ -67,21 +67,21 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class result extends AppCompatActivity implements OnUserEarnedRewardListener {
-  Button button ,share,tryagain;
-  TextView textView,nametext;
-  int isadd =1;
-  int ranNum = 5;
+    Button button ,share,tryagain;
+    TextView textView,nametext;
+    int isadd =1;
+    int ranNum = 5;
     RecyclerView recyclerView;
-  ImageView imageView,imageView2;
-  CreateImage createImage = new CreateImage();
-  Bitmap image5;
+    ImageView imageView,imageView2;
+    CreateImage createImage = new CreateImage();
+    Bitmap image5;
     int position=1;
     String data;
     AdView mAdView;
-  CallbackManager callbackManager;
-  ShareDialog shareDialog;
-  RewardedInterstitialAd rewardedInterstitialAd;
-  RelativeLayout relativeLayout;
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
+    RewardedInterstitialAd rewardedInterstitialAd;
+    RelativeLayout relativeLayout;
     final String TAG = "result";
     @SuppressLint("MissingInflatedId")
     @Override
@@ -94,10 +94,10 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         imageView2 = (ImageView) findViewById(R.id.imageView2);
         nametext = (TextView) findViewById(R.id.textView) ;
         textView = (TextView) findViewById(R.id.textView2) ;
-       button = (Button) findViewById(R.id.upload);
+        button = (Button) findViewById(R.id.upload);
         tryagain = (Button) findViewById(R.id.tryagain);
         mAdView = findViewById(R.id.adView);
-       share = (Button) findViewById(R.id.fb_share_button);
+        share = (Button) findViewById(R.id.fb_share_button);
         relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
         relativeLayout.setDrawingCacheEnabled(true);
         callbackManager = CallbackManager.Factory.create();
@@ -174,30 +174,30 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                 t1.start();
 
                 //     image5 = createImage.loadBitmapFromView(relativeLayout);
-         //       BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-           //     Bitmap image2 = drawable.getBitmap();
+                //       BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                //     Bitmap image2 = drawable.getBitmap();
             }
 
         });
-    //    Bitmap bitmap = relativeLayout.getDrawingCache();
-    //    Bitmap bmp = createImage.textAsBitmap("hi all", 2, 3700);
+        //    Bitmap bitmap = relativeLayout.getDrawingCache();
+        //    Bitmap bmp = createImage.textAsBitmap("hi all", 2, 3700);
         //    Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
-    //   Bitmap image4 = createImage.StringToBitMap("hi hanuman");
-   //     Bitmap image = combineImages(image2,bmp);
+        //   Bitmap image4 = createImage.StringToBitMap("hi hanuman");
+        //     Bitmap image = combineImages(image2,bmp);
 
-      //  showAd();
+        //  showAd();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-           public void onClick(View view) {
+            public void onClick(View view) {
                 ShareImage shareImage = new ShareImage();
                 shareImage.shrareAll(result.this,image5);
 
             }
         });
-       share.setOnClickListener(new View.OnClickListener() {
+        share.setOnClickListener(new View.OnClickListener() {
             @Override
-          public void onClick(View view) {
-             //   showAd();
+            public void onClick(View view) {
+                //   showAd();
                 ShareImage shareImage = new ShareImage();
                 try {
                     shareImage.sharefb(callbackManager,shareDialog,result.this,image5);
@@ -206,33 +206,33 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                 }
             }
         });
-       tryagain.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               FirebaseGetData firebaseGetData = new FirebaseGetData();
-               firebaseGetData.fetchAllData("result/image"+String.valueOf(position));
-               firebaseGetData.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
-                   @RequiresApi(api = Build.VERSION_CODES.N)
-                   @Override
-                   public void getRealList(SomeFunction.dataReturn list) {
-                       list.totalList.sort(new Comparator<HashMap<String,String>>(){
-                           public int compare(HashMap<String,String> mapping1,HashMap<String,String> mapping2){
-                               return mapping1.keySet().iterator().next().compareTo( mapping2.keySet().iterator().next());
-                           }});
-                       int l = list.totalKey.size();
-                       Random random = new Random();
-                       int ra = random.nextInt(l);
-                       if(ra==0){
-                           ra=1;
-                       }
-                       String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
-                       textView.setText(val);
-                       image5 = createImage.loadBitmapFromView(relativeLayout);
-                   }
+        tryagain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseGetData firebaseGetData = new FirebaseGetData();
+                firebaseGetData.fetchAllData("result/image"+String.valueOf(position));
+                firebaseGetData.setOnItemClickForFetchData(new FirebaseGetData.OnItemClick() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void getRealList(SomeFunction.dataReturn list) {
+                        list.totalList.sort(new Comparator<HashMap<String,String>>(){
+                            public int compare(HashMap<String,String> mapping1,HashMap<String,String> mapping2){
+                                return mapping1.keySet().iterator().next().compareTo( mapping2.keySet().iterator().next());
+                            }});
+                        int l = list.totalKey.size();
+                        Random random = new Random();
+                        int ra = random.nextInt(l);
+                        if(ra==0){
+                            ra=1;
+                        }
+                        String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
+                        textView.setText(val);
+                        image5 = createImage.loadBitmapFromView(relativeLayout);
+                    }
 
-               });
-           }
-       });
+                });
+            }
+        });
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -243,13 +243,13 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         isadd = firebaseGetData.getRemote("isadd",result.this);
         ranNum = firebaseGetData.getRemote("ranNum",result.this);
         if(isadd ==1){
-           Random random = new Random();
-           int rand = random.nextInt(ranNum);
-        //    Toast.makeText(result.this, " random num is  "+String.valueOf(rand)+" "+isadd,
-     //               Toast.LENGTH_LONG).show();
-           if(rand == 0){
-               showAd();
-           }
+            Random random = new Random();
+            int rand = random.nextInt(ranNum);
+            //    Toast.makeText(result.this, " random num is  "+String.valueOf(rand)+" "+isadd,
+            //               Toast.LENGTH_LONG).show();
+            if(rand == 0){
+                showAd();
+            }
         }
 
     }
@@ -265,7 +265,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-     //    image5 = createImage.loadBitmapFromView(relativeLayout);
+        //    image5 = createImage.loadBitmapFromView(relativeLayout);
     }
     public void shareFB (View view) {
         ShareLinkContent content = new ShareLinkContent.Builder()
@@ -338,7 +338,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
             @Override
             public void run() {
 
-              //  image5 = createImage.loadBitmapFromView(relativeLayout);
+                //  image5 = createImage.loadBitmapFromView(relativeLayout);
             }
         });
 

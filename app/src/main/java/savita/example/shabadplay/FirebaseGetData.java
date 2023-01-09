@@ -48,7 +48,7 @@ public class FirebaseGetData {
                     SomeFunction.dataReturn twoList = someFunction.stringToList(data);
                     onItemClick.getRealList(twoList);
                 }
-     else {
+                else {
                     //  Object obj = task.getResult().getValue();
                     String data = String.valueOf(task.getResult().getValue());
                     Log.d("firebasetest", "onComplete: "+data);

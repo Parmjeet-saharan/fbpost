@@ -72,7 +72,7 @@ public class Main2Activity extends AppCompatActivity {
     AdView mAdView,mAdView2;
     AppUpdateManager appUpdateManager;
     InstallStateUpdatedListener installStateUpdatedListener;
-     final String TAG = "MainActivity";
+    final String TAG = "MainActivity";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -179,7 +179,7 @@ public class Main2Activity extends AppCompatActivity {
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
                     // update the preview image in the layout
-               //     imageView.setImageURI(selectedImageUri);
+                    //     imageView.setImageURI(selectedImageUri);
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                         Requirdfunction requirdfunction = new Requirdfunction();
