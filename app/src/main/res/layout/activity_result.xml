@@ -30,27 +30,21 @@
                 android:scaleType="fitXY"
                 android:layout_height="250dp"
                 android:contentDescription="/my_image_description" />
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/imageView2"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
+                app:civ_border_width="2dp"
                 android:layout_marginTop="10dp"
-                app:cardCornerRadius="45dp">
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
-
-            </androidx.cardview.widget.CardView>
+                app:civ_border_color="#FF000000"/>
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="17dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/cardView"
+            android:layout_toRightOf="@+id/imageView2"
             android:layout_centerHorizontal="true"
             android:textColor="@color/white"
             android:layout_alignParentTop="true"
@@ -62,7 +56,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/textView"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/cardView"
+            android:layout_toRightOf="@+id/imageView2"
             android:textColor="@color/white"
             android:text="YOU CAN UPLOAD BELOW DOCUMENT TEST IS HERE YOU TRY IT"
             android:textSize="18dp" />
