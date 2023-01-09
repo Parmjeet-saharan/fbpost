@@ -66,21 +66,6 @@ public class FirebaseGetData {
                 .build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
         int iaadd = (int) mFirebaseRemoteConfig.getLong(remote);
-        mFirebaseRemoteConfig.fetchAndActivate()
-                .addOnCompleteListener((Activity) context, new OnCompleteListener<Boolean>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Boolean> task) {
-                        if (task.isSuccessful()) {
-                            boolean updated = task.getResult();
-                            Log.d("Firebase function", "Config params updated: " + updated);
-
-
-                        } else {
-
-                        }
-
-                    }
-                });
         return  iaadd ;
     }
 }

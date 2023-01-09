@@ -69,7 +69,7 @@ import java.util.concurrent.TimeUnit;
 public class result extends AppCompatActivity implements OnUserEarnedRewardListener {
   Button button ,share,tryagain;
   TextView textView,nametext;
-  int isadd = 1;
+  int isadd =1;
   int ranNum = 5;
     RecyclerView recyclerView;
   ImageView imageView,imageView2;
@@ -245,8 +245,8 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         if(isadd ==1){
            Random random = new Random();
            int rand = random.nextInt(ranNum);
-            Toast.makeText(result.this, " random num is  "+String.valueOf(rand),
-                    Toast.LENGTH_LONG).show();
+        //    Toast.makeText(result.this, " random num is  "+String.valueOf(rand)+" "+isadd,
+     //               Toast.LENGTH_LONG).show();
            if(rand == 0){
                showAd();
            }
