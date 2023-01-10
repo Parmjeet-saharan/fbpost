@@ -105,6 +105,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         Bundle extras = getIntent().getExtras();
         Requirdfunction requirdfunction = new Requirdfunction();
+        String name = requirdfunction.getFromProfomence(result.this);
         try {
             Bitmap profile = requirdfunction.getImage(result.this);
             imageView2.setImageBitmap(profile);
@@ -154,8 +155,6 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                     ra=1;
                 }
                 String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
-                Requirdfunction requirdfunction = new Requirdfunction();
-                String name = requirdfunction.getFromProfomence(result.this);
                 val=name+" "+val;
                 textView.setText(val);
                 Thread t1 = new Thread(new Runnable() {
@@ -225,7 +224,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                         if(ra==0){
                             ra=1;
                         }
-                        String val = list.totalList.get(ra).get("string"+String.valueOf(ra));
+                        String val = name+list.totalList.get(ra).get("string"+String.valueOf(ra));
                         textView.setText(val);
                         image5 = createImage.loadBitmapFromView(relativeLayout);
                     }
