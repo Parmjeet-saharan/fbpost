@@ -224,7 +224,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                         if(ra==0){
                             ra=1;
                         }
-                        String val = name+list.totalList.get(ra).get("string"+String.valueOf(ra));
+                        String val = name+" "+list.totalList.get(ra).get("string"+String.valueOf(ra));
                         textView.setText(val);
                         image5 = createImage.loadBitmapFromView(relativeLayout);
                     }
