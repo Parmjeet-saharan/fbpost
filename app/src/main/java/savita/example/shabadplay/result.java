@@ -239,8 +239,8 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
         });
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        isadd = firebaseGetData.getRemote("isadd",result.this);
-        ranNum = firebaseGetData.getRemote("ranNum",result.this);
+   //     isadd = firebaseGetData.getRemote("isadd",result.this);
+    //    ranNum = firebaseGetData.getRemote("ranNum",result.this);
         if(isadd ==1){
             Random random = new Random();
             int rand = random.nextInt(ranNum);

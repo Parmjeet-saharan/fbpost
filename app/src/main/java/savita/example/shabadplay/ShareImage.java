@@ -43,10 +43,10 @@ public class ShareImage {
             CreateImage createImage = new CreateImage();
             Uri uri = createImage.getmageToShare(image5,context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-            ShareHashtag shareHashTag = new ShareHashtag.Builder().setHashtag("https://www.youtube.com/watch?v=gcJ7MYr6dHc&list=RDMMEkIvdiVjKII&index\"").build();
+            ShareHashtag shareHashTag = new ShareHashtag.Builder().setHashtag("#ShabadPlay").build();
             SharePhoto photo = new SharePhoto.Builder()
                     .setBitmap(bitmap)
-                    .setCaption("https://www.youtube.com/watch?v=gcJ7MYr6dHc&list=RDMMEkIvdiVjKII&index")
+                    .setCaption("#ShabadPlay")
                     .build();
             SharePhotoContent content = new SharePhotoContent.Builder()
                     .addPhoto(photo)
@@ -65,10 +65,10 @@ public class ShareImage {
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         // adding text to share
-        intent.putExtra(Intent.EXTRA_TEXT, "https://firebase.google.com/docs/dynamic-links/use-cases/user-to-user#java");
+        intent.putExtra(Intent.EXTRA_TEXT, "#ShabadPlay");
 
         // Add subject Here
-        intent.putExtra(Intent.EXTRA_SUBJECT, "https://firebase.google.com/docs/dynamic-links/use-cases/user-to-user#java");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "#ShabadPlay");
 
         // setting type to image
         intent.setType("image/*\" + \"text/*");
