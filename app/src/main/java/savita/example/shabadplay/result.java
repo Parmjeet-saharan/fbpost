@@ -70,7 +70,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
     Button button ,share,tryagain;
     TextView textView,nametext;
     int isadd =1;
-    int ranNum = 5;
+    int ranNum = 1;
     RecyclerView recyclerView;
     ImageView imageView,imageView2;
     CreateImage createImage = new CreateImage();
