@@ -272,7 +272,7 @@ public class result extends AppCompatActivity implements OnUserEarnedRewardListe
                 .build();
     }
     public void showAd(){
-        RewardedInterstitialAd.load(this, "ca-app-pub-3940256099942544/5354046379",
+        RewardedInterstitialAd.load(this, "ca-app-pub-4379271297318191/9460201823",
                 new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(RewardedInterstitialAd ad) {
